@@ -36,3 +36,8 @@
 [[constraint]]
   name = "github.com/jinzhu/gorm"
   version = "1.9.1"
+
+[metadata.heroku]
+  root-package = "gowiki"
+  go-version = "1.10"
+  install = ["./..."]
