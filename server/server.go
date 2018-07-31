@@ -20,4 +20,5 @@ func (s *Server) RegisterRouter(r *mux.Router) {
 	r.HandleFunc("/view/{title}", s.viewHandler)
 	r.HandleFunc("/edit/{title}", s.editHandler)
 	r.HandleFunc("/save/{title}", s.saveHandler)
+	r.HandleFunc("/", s.indexHandler)
 }

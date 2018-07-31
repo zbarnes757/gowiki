@@ -8,7 +8,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
+var templates = template.Must(template.ParseFiles("edit.html", "view.html", "index.html"))
 
 func renderTemplate(w http.ResponseWriter, tmpl string, p *models.Page) {
 	err := templates.ExecuteTemplate(w, tmpl+".html", p)
@@ -28,5 +28,19 @@ func (s *Server) viewHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/edit/"+vars["title"], http.StatusFound)
 	} else {
 		renderTemplate(w, "view", &page)
+	}
+}
+
+func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
+	var pages []models.Page
+
+	if err := s.db.Find(&pages).Error; err != nil {
+		http.Error(w, err.Error(), 400)
+	} else {
+		err := templates.ExecuteTemplate(w, "index.html", pages)
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 	}
 }
